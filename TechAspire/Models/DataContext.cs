@@ -3,11 +3,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TechAspire.Models
 {
-    public class DataContext : IdentityDbContext<AppUser>
+    public class DataContext : IdentityDbContext<AppUserModel>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         #region
-        DbSet<AppUser> AppUser { get; set; }
+      
+        public DbSet<CategoryModel> Categories { get; set; }
+        public DbSet<BrandModel> Brands { get; set; }
+        public DbSet<ProductModel>  Products { get; set; }
+
+
         #endregion
     }
 }

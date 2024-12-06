@@ -17,14 +17,14 @@ namespace TechAspire.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUserModel> _userManager;
+        private readonly SignInManager<AppUserModel> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
 
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailSender emailSender)
+        public AuthController(UserManager<AppUserModel> userManager, SignInManager<AppUserModel> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,7 +33,7 @@ namespace TechAspire.Controllers
             _emailSender = emailSender;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register(AppUser appUser)
+        public async Task<IActionResult> Register(AppUserModel appUser)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace TechAspire.Controllers
                 {
                     return BadRequest("Email đã tồn tại");
                 }
-                var user = new AppUser
+                var user = new AppUserModel
                 {
                     UserName = appUser.UserName,
                     Email = appUser.Email,
@@ -135,7 +135,7 @@ namespace TechAspire.Controllers
 
 
 
-        private string GenerateJwtToken(AppUser appUser)
+        private string GenerateJwtToken(AppUserModel appUser)
         {
             var claims = new List<Claim>
             {
@@ -160,7 +160,7 @@ namespace TechAspire.Controllers
         }
 
   
-        private string GenerateRefreshToken(AppUser appUser)
+        private string GenerateRefreshToken(AppUserModel appUser)
         {
             var claims = new List<Claim>
     {

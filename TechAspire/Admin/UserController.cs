@@ -8,14 +8,14 @@ namespace TechAspire.Admin
 {
     [Route("api/Admin/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<AppUserModel> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly DataContext _dataContext;
 
-        public UserController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, DataContext dataContext)
+        public UserController(UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager, DataContext dataContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -49,7 +49,7 @@ namespace TechAspire.Admin
             }
         }
         [HttpPost("CreateUser")]
-        public async Task<IActionResult> CreateUser(AppUser appUser , string role)
+        public async Task<IActionResult> CreateUser(AppUserModel appUser , string role)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace TechAspire.Admin
                 }
                
                
-                var user = new AppUser
+                var user = new AppUserModel
                 {
                     UserName = appUser.UserName,
                     Email = appUser.Email,
@@ -100,7 +100,7 @@ namespace TechAspire.Admin
             }
         }
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(string id, AppUser appUser, string role)
+        public async Task<IActionResult> UpdateUser(string id, AppUserModel appUser, string role)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace TechAspire.Admin
              
                 if (!string.IsNullOrEmpty(appUser.PasswordHash))
                 {
-                    var passwordHasher = new PasswordHasher<AppUser>();
+                    var passwordHasher = new PasswordHasher<AppUserModel>();
                     user.PasswordHash = passwordHasher.HashPassword(user, appUser.PasswordHash);
                 }
 

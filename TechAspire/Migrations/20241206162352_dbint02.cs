@@ -5,7 +5,7 @@
 namespace TechAspire.Migrations
 {
     /// <inheritdoc />
-    public partial class dbinit04 : Migration
+    public partial class dbint02 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
