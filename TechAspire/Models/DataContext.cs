@@ -11,6 +11,7 @@ namespace TechAspire.Models
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<BrandModel> Brands { get; set; }
         public DbSet<ProductModel>  Products { get; set; }
+        
 
 
         #endregion

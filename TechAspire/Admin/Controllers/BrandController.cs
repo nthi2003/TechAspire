@@ -4,29 +4,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechAspire.Models;
 
-namespace TechAspire.Admin
+namespace TechAspire.Admin.Controllers
 {
     [Route("api/Admin/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class CategoryController : Controller
+    public class BrandController : Controller
     {
         private readonly DataContext _dataContext;
 
-        public CategoryController(DataContext context)
+        public BrandController(DataContext context)
         {
             _dataContext = context;
         }
         [HttpGet]
-        public async Task<IActionResult> GetCategory()
+        public async Task<IActionResult> GetBrands()
         {
-            try { 
-            
-                var category = await _dataContext.Categories.OrderBy(b => b.Id).ToListAsync();
+            try
+            {
+                var brand = await _dataContext.Brands.OrderBy(b => b.Id).ToListAsync();
                 return Ok(new
                 {
                     Success = true,
-                    Data = category
+                    Data = brand
                 });
 
             }
@@ -36,24 +36,24 @@ namespace TechAspire.Admin
             }
         }
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CategoryModel category)
+        public async Task<IActionResult> CreateBrand(BrandModel brand)
         {
             try
             {
 
-                var exitscategory = await _dataContext.Categories.AnyAsync(b => b.Name == category.Name);
+                var exitsbrand = await _dataContext.Brands.AnyAsync(b => b.Name == brand.Name);
 
-                if (exitscategory) // Nếu thương hiệu đã tồn tại
+                if (exitsbrand) // Nếu thương hiệu đã tồn tại
                 {
-                    return BadRequest(new { Success = false, Message = "Danh mục đã tồn tại." });
+                    return BadRequest(new { Success = false, Message = "Thương hiệu đã tồn tại." });
                 }
-                var createCategory = await _dataContext.AddAsync(category);
+                var createbrand = await _dataContext.AddAsync(brand);
                 await _dataContext.SaveChangesAsync();
                 return Ok(new
                 {
                     Success = true,
-                    Data = category,
-                    message = "Tạo danh mục thành công"
+                    Data = brand,
+                    message = "Tạo thương hiệu thành công"
                 });
 
 
@@ -65,30 +65,30 @@ namespace TechAspire.Admin
             }
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] CategoryModel category)
+        public async Task<IActionResult> UpdateBrand([FromRoute] int id, [FromBody] BrandModel brand)
         {
             try
             {
-                var existingCategory = await _dataContext.Categories.FindAsync(id);
+                var existingBrand = await _dataContext.Brands.FindAsync(id);
 
-                if (existingCategory == null)
+                if (existingBrand == null)
                 {
-                    return BadRequest(new { Success = false, Message = "Danh mục không tồn tại." });
+                    return BadRequest(new { Success = false, Message = "Thương hiệu không tồn tại." });
                 }
 
 
-                existingCategory.Name = category.Name;
-                existingCategory.Description = category.Description;
+                existingBrand.Name = brand.Name;
+                existingBrand.Description = brand.Description;
 
 
-                _dataContext.Categories.Update(existingCategory);
+                _dataContext.Brands.Update(existingBrand);
                 await _dataContext.SaveChangesAsync();
 
                 return Ok(new
                 {
                     Success = true,
-                    Data = category,
-                    Message = "Cập danh mục thành công"
+                    Data = brand,
+                    Message = "Cập nhật thương hiệu thành công"
                 });
 
             }
@@ -98,26 +98,26 @@ namespace TechAspire.Admin
             }
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteBrand(int id)
         {
             try
             {
-                var category = await _dataContext.Categories.FindAsync(id);
-                if (category == null)
+                var brand = await _dataContext.Brands.FindAsync(id);
+                if (brand == null)
                 {
                     return BadRequest(new
                     {
                         Success = true,
-                        Message = "Danh mục không tồn tại."
+                        Message = "Thương hiệu không tồn tại."
                     });
                 }
-                _dataContext.Categories.Remove(category);
+                _dataContext.Brands.Remove(brand);
                 await _dataContext.SaveChangesAsync();
                 return Ok(new
                 {
                     Success = true,
 
-                    Message = " Xóa danh mục thành công"
+                    Message = " Xóa thương hiệu thành công"
                 });
 
 

@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Cấu hình các dịch vụ
 builder.Services.AddControllers();
-
+builder.Services.AddSingleton<CloudinaryService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

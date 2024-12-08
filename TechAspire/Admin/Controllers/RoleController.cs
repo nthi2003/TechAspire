@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TechAspire.Admin
+namespace TechAspire.Admin.Controllers
 {
     [Route("api/Admin/[controller]")]
     [ApiController]
@@ -29,7 +29,7 @@ namespace TechAspire.Admin
             }
             catch
             {
-              return StatusCode(500, new { message = "Lỗi khi lấy danh sách vai trò" });
+                return StatusCode(500, new { message = "Lỗi khi lấy danh sách vai trò" });
             }
         }
         [HttpPost]
@@ -53,12 +53,13 @@ namespace TechAspire.Admin
                     return BadRequest(result.Errors);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
 
         }
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(string id, string newRoleName)
         {
             try
@@ -66,7 +67,7 @@ namespace TechAspire.Admin
 
 
                 var role = await _roleManager.FindByIdAsync(id);
-                if(role == null)
+                if (role == null)
                 {
                     return BadRequest("Vai trò không tồn tại");
                 }
@@ -99,7 +100,7 @@ namespace TechAspire.Admin
                     return BadRequest("Vai trò không tồn tại");
                 }
                 var result = await _roleManager.DeleteAsync(role);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     return Ok(new { message = "Vai trò được xóa thành công" });
                 }
