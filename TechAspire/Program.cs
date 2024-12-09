@@ -24,6 +24,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("TechAspire"));
 });
+// giúp ích rất ng
 
 
 builder.Services.AddIdentity<AppUserModel, IdentityRole>()

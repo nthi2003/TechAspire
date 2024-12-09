@@ -1,4 +1,5 @@
 ﻿using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechAspire.Models;
@@ -70,7 +71,7 @@ namespace TechAspire.Admin
                     Price = product.Price,
                     BrandId = product.BrandId,
                     CategoryId = product.CategoryId,
-                    Quantity = product.Quantity,
+                   
                     Sold = product.Sold,
                     Images = product.Images
                 };
@@ -90,9 +91,9 @@ namespace TechAspire.Admin
             }
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(ProductModel product , int id)
+        public async Task<IActionResult> UpdateProduct(ProductModel product, int id)
         {
-           
+
 
             try
             {
@@ -108,7 +109,7 @@ namespace TechAspire.Admin
                 existingProduct.Price = product.Price;
                 existingProduct.BrandId = product.BrandId;
                 existingProduct.CategoryId = product.CategoryId;
-                existingProduct.Quantity = product.Quantity;
+            
                 existingProduct.Sold = product.Sold;
 
 
@@ -121,7 +122,7 @@ namespace TechAspire.Admin
                         existingProduct.Images.Add(imageUrl);
                     }
                 }
-                if (product.Price <= 0 || product.Quantity < 0 || product.Sold < 0)
+                if (product.Price <= 0 || product.Sold < 0)
                 {
                     return BadRequest(new { message = "Giá hoặc số lượng không hợp lệ" });
                 }
@@ -196,7 +197,7 @@ namespace TechAspire.Admin
 
                 var publicId = imageUrl.Split('/').Last().Split('.').First();
 
-                // Gọi phương thức DestroyAsync để xóa ảnh
+
                 var result = await _cloudinaryService.DestroyAsync(publicId);
 
                 if (result.Result != "ok")

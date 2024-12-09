@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using TechAspire.Models;
-using System.Text.Json.Serialization;
 
 public class ProductModel
 {
@@ -25,16 +24,14 @@ public class ProductModel
     [Required, Range(1, int.MaxValue, ErrorMessage = "Chọn một danh mục")]
     public int CategoryId { get; set; }
 
-    public int Quantity { get; set; }
     public int Sold { get; set; }
 
-    // Không bắt buộc ánh xạ đến đối tượng Brand hoặc Category
     public CategoryModel? Category { get; set; }
     public BrandModel? Brand { get; set; }
 
     public List<string> Images { get; set; } = new List<string>();
 
     [NotMapped]
-    [JsonIgnore] // lỗi bỏ thằng này khi respone trả về
+   
     public List<IFormFile>? ImageUploads { get; set; }
 }

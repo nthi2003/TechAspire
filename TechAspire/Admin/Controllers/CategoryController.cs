@@ -129,6 +129,40 @@ namespace TechAspire.Admin.Controllers
                 return StatusCode(500, $"Lỗi server: {ex.Message}");
             }
         }
+        [HttpGet("GetProductsByCategory")]
+        
+        public async Task<IActionResult> GetProductsByCategory (int categoryId)
+        {
+            try
+            {
+                var category = await _dataContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+                if (category == null)
+                {
+                    return BadRequest(new
+                    {
+                        Success = false,
+                        Message = "Không tìm thấy danh mục"
+                    });
+
+                }
+                var product = await _dataContext.Products
+                    .Where(p => p.CategoryId == categoryId)
+                    .Include(p => p.Category)
+                    .Include(p => p.Brand)
+                    .OrderBy(p => p.Id)
+                    .ToArrayAsync();
+                return Ok(new
+                {
+                    Success = true,
+                    Data = product
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi server: {ex.Message}");
+            }
+
+        }
 
     }
 }

@@ -101,68 +101,52 @@ namespace TechAspire.Admin.Controllers
             }
         }
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(string id, AppUserModel appUser, string role)
+        public async Task<IActionResult> UpdateUser(string id, string role)
         {
             try
             {
-
+              
                 var user = await _userManager.FindByIdAsync(id);
                 if (user == null)
                 {
                     return BadRequest("Người dùng không tồn tại");
                 }
 
-
-                user.UserName = appUser.UserName ?? user.UserName;
-                user.Email = appUser.Email ?? user.Email;
-                user.PhoneNumber = appUser.PhoneNumber ?? user.PhoneNumber;
-
-
-                if (!string.IsNullOrEmpty(appUser.PasswordHash))
-                {
-                    var passwordHasher = new PasswordHasher<AppUserModel>();
-                    user.PasswordHash = passwordHasher.HashPassword(user, appUser.PasswordHash);
-                }
-
-
+             
                 if (!string.IsNullOrEmpty(role))
                 {
-
+                  
                     if (!await _roleManager.RoleExistsAsync(role))
                     {
                         return BadRequest("Vai trò không tồn tại");
                     }
 
-
+                 
                     var currentRoles = await _userManager.GetRolesAsync(user);
                     foreach (var currentRole in currentRoles)
                     {
                         await _userManager.RemoveFromRoleAsync(user, currentRole);
                     }
 
-
+                    
                     await _userManager.AddToRoleAsync(user, role);
                 }
 
-
+               
                 var result = await _userManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
                     return BadRequest("Không thể cập nhật thông tin người dùng, vui lòng thử lại");
                 }
 
-
+                // Trả về kết quả
                 return Ok(new
                 {
                     User = new
                     {
-                        user.Id,
-                        user.UserName,
-                        user.Email,
-                        user.PhoneNumber,
                         Roles = role
                     },
-                    message = "Cập nhật tài khoản thành công"
+                    message = "Cập nhật vai trò thành công"
                 });
             }
             catch (Exception ex)
@@ -170,6 +154,7 @@ namespace TechAspire.Admin.Controllers
                 return StatusCode(500, $"Lỗi server: {ex.Message}");
             }
         }
+
 
         [HttpDelete("DeleteUser")]
         public async Task<IActionResult> DeleteUser(string id)
