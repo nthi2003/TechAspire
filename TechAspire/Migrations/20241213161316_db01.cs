@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechAspire.Migrations
 {
     /// <inheritdoc />
-    public partial class db1 : Migration
+    public partial class db01 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,22 +63,6 @@ namespace TechAspire.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Brands", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CartItems",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProdutName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Images = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CartItems", x => x.ProductId);
                 });
 
             migrationBuilder.CreateTable(
@@ -325,6 +309,36 @@ namespace TechAspire.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    CartItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Images = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => x.CartItemId);
+                    table.ForeignKey(
+                        name: "FK_CartItems_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductQuantities",
                 columns: table => new
                 {
@@ -352,7 +366,7 @@ namespace TechAspire.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -432,6 +446,16 @@ namespace TechAspire.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_ProductId",
+                table: "CartItems",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_UserId",
+                table: "CartItems",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderCode",

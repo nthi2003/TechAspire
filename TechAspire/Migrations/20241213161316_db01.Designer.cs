@@ -12,8 +12,8 @@ using TechAspire.Models;
 namespace TechAspire.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241209151753_db1")]
-    partial class db1
+    [Migration("20241213161316_db01")]
+    partial class db01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -360,11 +360,11 @@ namespace TechAspire.Migrations
 
             modelBuilder.Entity("TechAspire.Models.CartItemModel", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("CartItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
 
                     b.PrimitiveCollection<string>("Images")
                         .IsRequired()
@@ -373,14 +373,25 @@ namespace TechAspire.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProdutName")
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CartItemId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CartItems");
                 });
@@ -538,12 +549,12 @@ namespace TechAspire.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -664,6 +675,25 @@ namespace TechAspire.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("TechAspire.Models.CartItemModel", b =>
+                {
+                    b.HasOne("ProductModel", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TechAspire.Models.AppUserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TechAspire.Models.ProductQuantityModel", b =>

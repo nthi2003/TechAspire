@@ -8,9 +8,9 @@ namespace TechAspire.Models
         [Key]
         public int Id { get; set; }
         public int ProductId { get; set; }
-        public string UserId { get; set; }
+		public string Email { get; set; }
 
-        [ForeignKey("ProductId")]
+		[ForeignKey("ProductId")]
 
         public ProductModel Product { get; set; }
     }

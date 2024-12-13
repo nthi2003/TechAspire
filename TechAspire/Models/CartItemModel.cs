@@ -2,30 +2,25 @@
 
 namespace TechAspire.Models
 {
-    public class CartItemModel
-    {
-        [Key]
-        public int ProductId { get; set; }
-        public string ProdutName { get; set; }
-        public int Quantity { get; set; }
+	public class CartItemModel
+	{
+		[Key]
+		public int CartItemId { get; set; }  
 
-        public decimal Price { get; set; }
+		public int ProductId { get; set; }  // Foreign key for the product
+		public ProductModel Product { get; set; }  // Navigation property for Product
 
-        public decimal Total => Quantity * Price;
+		public string ProductName { get; set; }  // Optional: If you need to store the product name in the CartItem
+		public int Quantity { get; set; }  // Quantity of the product in the cart
+		public decimal Price { get; set; }  // Price of the product
 
-        public List<string> Images { get; set; } = new List<string>();
+		// Calculated property for the total price
+		public decimal Total => Quantity * Price;
 
-        public CartItemModel()
-        {
+		public List<string> Images { get; set; } = new List<string>();  // Images for the product
 
-        }
-        public CartItemModel(ProductModel product)
-        {
-            ProductId = product.Id;
-            ProdutName = product.Name;
-            Price = product.Price;
-            Quantity = 1;
-            Images = product.Images;
-        }
-    }
+		// Foreign key for the user
+		public string UserId { get; set; }
+		public AppUserModel User { get; set; }  // Navigation property for the user
+	}
 }
