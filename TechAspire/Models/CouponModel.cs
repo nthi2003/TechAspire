@@ -14,8 +14,10 @@ namespace TechAspire.Models
         public DateTime DateStart { get; set; }
         public DateTime DateExpired { get; set; }
 
-
-        [Required(ErrorMessage = "Yêu cầu nhập số lượng giảm giá")]
+		[Range(0, 100, ErrorMessage = "Phần trăm giảm giá phải từ 0 đến 100")]
+		public decimal DiscountPercentage { get; set; }
+        
+		[Required(ErrorMessage = "Yêu cầu nhập số lượng giảm giá")]
         public int Quantity { get; set; }
 
         public int Status { get; set; }

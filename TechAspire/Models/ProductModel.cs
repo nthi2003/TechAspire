@@ -31,7 +31,14 @@ public class ProductModel
 
     public List<string> Images { get; set; } = new List<string>();
 
-    [NotMapped]
-   
+
+    [Range(0, 100, ErrorMessage = "Phần trăm giảm giá phải từ 0 đến 100")]
+	public decimal DiscountPercentage { get; set; }
+	[NotMapped]
+	public decimal DiscountedPrice => Price - (Price * DiscountPercentage / 100);
+
+
+	[NotMapped]
+ 
     public List<IFormFile>? ImageUploads { get; set; }
 }

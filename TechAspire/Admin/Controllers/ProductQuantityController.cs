@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechAspire.Models;
 
@@ -6,7 +7,8 @@ namespace TechAspire.Admin.Controllers
 {
     [Route("api/Admin/[controller]")]
     [ApiController]
-    public class ProductQuantityController : Controller
+	[Authorize(Roles = "Admin")]
+	public class ProductQuantityController : Controller
     {
 
         private readonly DataContext _dataContext;

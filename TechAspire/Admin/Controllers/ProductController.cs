@@ -8,7 +8,8 @@ namespace TechAspire.Admin
 {
     [Route("api/Admin/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+	[Authorize(Roles = "Admin")]
+	public class ProductController : ControllerBase
     {
         private readonly DataContext _dataContext;
         private readonly CloudinaryService _cloudinaryService;
@@ -71,8 +72,10 @@ namespace TechAspire.Admin
                     Price = product.Price,
                     BrandId = product.BrandId,
                     CategoryId = product.CategoryId,
-                   
-                    Sold = product.Sold,
+					DiscountPercentage = product.DiscountPercentage,
+
+
+					Sold = product.Sold,
                     Images = product.Images
                 };
 
@@ -109,8 +112,9 @@ namespace TechAspire.Admin
                 existingProduct.Price = product.Price;
                 existingProduct.BrandId = product.BrandId;
                 existingProduct.CategoryId = product.CategoryId;
-            
-                existingProduct.Sold = product.Sold;
+                existingProduct.DiscountPercentage = product.DiscountPercentage;
+
+				existingProduct.Sold = product.Sold;
 
 
                 if (product.ImageUploads != null && product.ImageUploads.Count > 0)
