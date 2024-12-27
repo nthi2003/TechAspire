@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using TechAspire.Models;
 
 namespace TechAspire.Controllers
@@ -12,104 +16,99 @@ namespace TechAspire.Controllers
 	{
 		private readonly DataContext _dataContext;
 		private readonly UserManager<AppUserModel> _userManager;
-		public CartController(DataContext dataContext , UserManager<AppUserModel> userManager )
+		private readonly IConfiguration _configuration;
+
+		public CartController(DataContext dataContext, UserManager<AppUserModel> userManager, IConfiguration configuration)
 		{
 			_dataContext = dataContext;
-			_userManager =  userManager;
-
+			_userManager = userManager;
+			_configuration = configuration;
 		}
 		[HttpGet]
-		public async Task<IActionResult> GetCart()
+		public async Task<IActionResult> GetCart(int cartId)
 		{
 			try
 			{
-				var user = await _userManager.GetUserAsync(User);
-				if (user == null)
-				{
-					return Unauthorized("Bạn cần đăng nhập để xem giỏ hàng.");
-				}
-				var cartItem = await _dataContext.CartItems
-		          .Where(c => c.UserId == user.Id)
-		          .Select(c => new
-				  {
-					  CartItemId = c.CartItemId,
-					  ProductId = c.ProductId,
-					  ProductName = c.ProductName,
-					  Quantity = c.Quantity,
-					  Price = c.Price,
-					  Total = c.Quantity * c.Price,
-					  Images = c.Images
-				  })
+	
+				var cart = await _dataContext.Cart
+					.Include(c => c.Items)
+					.FirstOrDefaultAsync(c => c.Id == cartId);
 
-		         .ToListAsync();
-				if (cartItem == null || cartItem.Count == 0)
+			
+				if (cart == null)
 				{
-					return NotFound(new { Success = false, Message = "Giỏ hàng của bạn đang trống." });
+					return NotFound("Giỏ hàng không tồn tại"); 
 				}
-				return Ok(new
-				{
-					Success = true,
-					CartItems = cartItem
-				});
+
+			
+
+				return Ok(cart); 
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Lỗi server: {ex.Message}");
+				Console.WriteLine("Lỗi xảy ra: " + ex.Message);
+				return StatusCode(500, "Lỗi hệ thống. Vui lòng thử lại sau.");
 			}
-		
 		}
 
 		[HttpPost("{productId}")]
+	
 		public async Task<IActionResult> AddToCart(int productId)
 		{
 			try
 			{
-				var user = await _userManager.GetUserAsync(User);
-				if (user == null)
-				{
-					return Unauthorized("Bạn cần đăng nhập để thực hiện hành động này.");
-				}
+				
+				var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
 				var product = await _dataContext.Products.FindAsync(productId);
 				if (product == null)
 				{
-					return BadRequest(new
-					{
-						Success = false,
-						Message = "Sản phẩm không tồn tại."
-					});
+					return NotFound(new { message = "Sản phẩm không tồn tại." });
 				}
-				var existingCartItem = await _dataContext.CartItems
-					.FirstOrDefaultAsync(c => c.ProductId == productId && c.UserId == user.Id);
-				if(existingCartItem == null)
-				{
-					var newCartItem = new CartItemModel
-					{
-						ProductId = product.Id,
-						ProductName = product.Name,
-						Price = product.Price,
-						Quantity = 1,
-						Images = product.Images,
-						UserId = user.Id
-					};
-					_dataContext.CartItems.Add(newCartItem);
-					await _dataContext.SaveChangesAsync();
 
-					return Ok(new
+			
+				var cart = await _dataContext.Cart
+					.Include(c => c.Items)
+					.FirstOrDefaultAsync(c => c.UserId == userId);
+				if (cart == null)
+				{
+					cart = new CartModel
 					{
-						Success = true,
-						Message = "Sản phẩm đã được thêm vào giỏ hàng."
-					});
+						UserId = userId,
+						CreatedAt = DateTime.UtcNow,
+						UpdatedAt = DateTime.UtcNow,
+						Items = new List<CartItemModel>()
+					};
+					_dataContext.Cart.Add(cart);
 				}
-				existingCartItem.Quantity++;
-				_dataContext.CartItems.Update(existingCartItem);
+
+				// Thêm sản phẩm vào giỏ hàng
+				var cartItem = cart.Items.FirstOrDefault(c => c.ProductId == productId);
+				if (cartItem == null)
+				{
+					cartItem = new CartItemModel
+					{
+						ProductId = productId,
+						Product = product,
+						Quantity = 1,
+						Price = product.Price
+					};
+					cart.Items.Add(cartItem);
+				}
+				else
+				{
+					cartItem.Quantity++;
+				}
+
+				// Lưu thay đổi
 				await _dataContext.SaveChangesAsync();
 
-				return Ok(new { Success = true, Message = "Số lượng sản phẩm đã được cập nhật." });
-
+				return Ok(new { message = "Thêm sản phẩm vào giỏ hàng thành công.", Data = cart });
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Lỗi server: {ex.Message}");
+				Console.WriteLine("Lỗi xảy ra: " + ex.Message);
+				return StatusCode(500, "Lỗi hệ thống. Vui lòng thử lại sau.");
 			}
 		}
 	}

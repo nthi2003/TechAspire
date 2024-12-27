@@ -8,7 +8,7 @@ namespace TechAspire.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "Yêu cầu nhập tên giảm giá")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Yêu cầu mô tả")]
+      
         public string Description { get; set; }
 
         public DateTime DateStart { get; set; }

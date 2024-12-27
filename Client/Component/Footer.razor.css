@@ -1,0 +1,57 @@
+﻿.newsletter {
+    height: 106px;
+    background: url(https://img.freepik.com/free-photo/skyline-downtown-new-york-new-york-usa_268835-773.jpg) center/cover no-repeat fixed;
+    padding-top: 31px;
+    margin-top: 20px;
+}
+
+    .newsletter .container {
+        max-width: 1000px;
+    }
+
+    .newsletter .title {
+        float: left;
+        color: #fff;
+        font-size: 20px;
+        margin-top: 5px;
+    }
+
+ .newsletter .title i {
+            font-size: 35px;
+            vertical-align: middle;
+ }
+
+    .newsletter form {
+        margin-left: 400px;
+        background: #fff;
+        border-radius: 40px;
+        height: 45px;
+        overflow: hidden;
+        padding: 0 10px;
+        position: relative;
+    }
+
+.newsletter form input {
+            float: left;
+            border: none;
+            height: 45px;
+            width: 100%;
+ }
+ .newsletter form button {
+            position: absolute;
+            right: 20px;
+            border: none;
+            background: none;
+            font-size: 35px;
+            color: dodgerblue;
+            height: 45px;
+            line-height: 45px;
+            padding: 0;
+  }
+
+.col-info {
+    float: left;
+    width: 25%;
+    padding: 20px 0;
+    overflow: hidden;
+}

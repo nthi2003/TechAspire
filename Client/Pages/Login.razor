@@ -1,0 +1,63 @@
+﻿@page "/login"
+@using Client.Model
+@using Client.Service
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService localStorage
+
+<PageTitle>TechAspire - Đăng nhập</PageTitle>
+
+<SectionTop />
+<HeaderSection />
+<Navbar />
+<div class="section-web">
+    <div>
+        <div class="is-flex">
+
+            <a href="/" style="padding : 2px">Trang chủ</a>
+            <i class="fa fa-angle-right" style="margin: 7px"></i>
+            <a style="padding : 2px">Đăng nhập</a>
+        </div>
+
+    </div>
+    <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div>
+            <b>Thông tin khách hàng đăng nhập hệ thống</b>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <InputText id="email" class="form-control" @bind-Value="loginModel.Email" />
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="loginModel.Password" />
+        </div>
+        <div class="is-flex">
+            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+            <a style="margin-top: 7px" href="#">Quên mật khẩu</a>
+        </div>
+    </EditForm>
+</div>
+<Footer />
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private string errorMessage;
+    private async Task HandleLogin()
+    {
+        try
+        {
+            var response = await AuthService.LoginAsync(loginModel);
+            await localStorage.SetItemAsync("authToken", response.Token);
+            await localStorage.SetItemAsync("refreshToken", response.RefreshToken);
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+}

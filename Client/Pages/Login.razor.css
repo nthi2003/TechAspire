@@ -1,0 +1,10 @@
+﻿.section-web {
+    padding: 15px;
+    margin-left: 70px;
+    margin-right: 70px;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}

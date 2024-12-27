@@ -8,7 +8,7 @@ namespace TechAspire.Admin
 {
     [Route("api/Admin/[controller]")]
     [ApiController]
-	[Authorize(Roles = "Admin")]
+	//[Authorize(Roles = "Admin")]
 	public class ProductController : ControllerBase
     {
         private readonly DataContext _dataContext;
@@ -137,6 +137,7 @@ namespace TechAspire.Admin
                 return Ok(new
                 {
                     Success = true,
+                    Message = "Cập nhật sản phẩm thành công",
                     Data = existingProduct
                 });
             }

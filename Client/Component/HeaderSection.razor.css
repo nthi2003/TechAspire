@@ -1,0 +1,123 @@
+﻿.img_logo {
+    float: left;
+    display: block;
+    width: 240px;
+    height: 75px;
+    text-align: center;
+    line-height: 95px;
+}
+
+.img_logo img {
+        display: inline-block;
+        max-width: 100%;
+        max-height: 100%;
+}
+
+.main-search {
+    position: relative;
+    float: left;
+    margin: 29px 0;
+    width: 1230px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.main-search form {
+        border: solid 1px #ddd;
+        border-radius: 4px;
+       
+       background: #fff;
+ 
+       }
+.header {
+    height: 95px;
+    border-bottom: solid 2px dodgerblue;
+}
+
+#text-search {
+    width: 100%;
+    border: none;
+    height: 35px;
+    margin: 0;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+}
+.main-search .search-btn {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    height: 30px;
+    border: none;
+    color: #fff;
+    outline: none;
+    background: dodgerblue;
+    border-radius: 4px;
+    padding: 0 15px;
+    font-size: 16px;
+}
+.header-right {
+    float: right;
+    text-align: center;
+}
+.header-right .item {
+    display: block;
+    height: 95px;
+    width: 81px;
+    text-align: center;
+    padding: 0;
+    position: relative;
+    padding-top: 21px;
+}
+.header-right .icons {
+    width: 37px;
+    height: 37px;
+}
+.header-right .fa {
+    color: #ec3237;
+    font-size: 28px;
+    height: 37px;
+    line-height: 37px;
+}
+.header-right .fa-solid {
+        color: #ec3237;
+        font-size: 28px;
+        height: 37px;
+        line-height: 37px;
+ }
+.header-right .item.cart a > b {
+    position: absolute;
+    background: dodgerblue;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    color: #fff;
+    border-radius: 100%;
+    display: block;
+    top: 20px;
+    right: 19px;
+    font-size: 12px;
+    border: solid 1px #fff;
+}
+.num-cart {
+    position: absolute;
+    background: dodgerblue;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    color: #fff;
+    border-radius: 100%;
+    display: block;
+    top: 20px;
+    right: 19px;
+    font-size: 12px;
+    border: solid 1px #fff;
+}
+.section-web {
+    padding: 15px;
+    margin-left: 70px;
+    margin-right: 70px;
+}

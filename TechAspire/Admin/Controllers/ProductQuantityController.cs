@@ -7,7 +7,7 @@ namespace TechAspire.Admin.Controllers
 {
     [Route("api/Admin/[controller]")]
     [ApiController]
-	[Authorize(Roles = "Admin")]
+	//[Authorize(Roles = "Admin")]
 	public class ProductQuantityController : Controller
     {
 

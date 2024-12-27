@@ -1,25 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using TechAspire.Models;
 
-namespace TechAspire.Models
+public class CartItemModel
 {
-	public class CartItemModel
-	{
-		[Key]
-		public int CartItemId { get; set; }  
+	[Key]
+	public int Id { get; set; }
 
-		public int ProductId { get; set; } 
-		public ProductModel Product { get; set; } 
+	public int CartId { get; set; }
 
-		public string ProductName { get; set; } 
-		public int Quantity { get; set; }
-		public decimal Price { get; set; } 
-		
-		public decimal Total => Quantity * Price;
+	[JsonIgnore]
+	public CartModel Cart { get; set; }
 
-		public List<string> Images { get; set; } = new List<string>();
+	public int ProductId { get; set; }
+	public ProductModel Product { get; set; }
 
-	
-		public string UserId { get; set; }
-		public AppUserModel User { get; set; } 
-	}
+	public int Quantity { get; set; }
+	public decimal Price { get; set; }
+
+	public decimal Total => Quantity * Price;
 }

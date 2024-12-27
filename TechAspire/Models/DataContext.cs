@@ -11,7 +11,8 @@ namespace TechAspire.Models
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<BrandModel> Brands { get; set; }
         public DbSet<CartItemModel> CartItems { get; set; }
-        public DbSet<ProductModel>  Products { get; set; }
+		public DbSet<CartModel> Cart { get; set; }
+		public DbSet<ProductModel>  Products { get; set; }
         public DbSet<WishListModel> WishLists { get; set; }
         public DbSet<ShippingModel> Shippings { get; set; }
 

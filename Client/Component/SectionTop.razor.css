@@ -1,0 +1,30 @@
+﻿.contact-box {
+    width : 100px;
+    height : 26px
+}
+.header-top {
+    gap: 20px;
+    align-items: center;
+    background: #f6f6f6;
+   
+}
+.header-section {
+    padding: 15px;
+    margin-left: 70px;
+    margin-right: 70px
+}
+.hover-a {
+    color: black;
+    background: #ddd;
+    display: block;
+    float: left;
+    line-height: 24px;
+    border-radius: 12px;
+    padding: 0 15px;
+    margin-right: 10px;
+    font-size: 13px;
+}
+.hover-a:hover {
+    color: dodgerblue;
+    text-align: center;
+}
